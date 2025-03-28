@@ -2,69 +2,106 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
+const compression = require('compression');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Enable CORS
-app.use(cors());
+// Enhanced security middleware
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", 'cdnjs.cloudflare.com'],
+      styleSrc: ["'self'", "'unsafe-inline'", 'cdnjs.cloudflare.com'],
+      imgSrc: ["'self'", 'data:']
+    }
+  }
+}));
+
+// Compression for better performance
+app.use(compression());
+
+// CORS configuration
+const corsOptions = {
+  origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : '*',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+app.use(cors(corsOptions));
 
 // Parse JSON and URL-encoded bodies (increasing limit for file uploads and signatures)
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
 // Serve static files from the public directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: process.env.NODE_ENV === 'production' ? '1d' : 0
+}));
 
-// Serve the main form page
+// Routes for different forms
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'msc-wound-ivr-form.html'));
 });
 
-// Create a proxy endpoint to forward to n8n
-app.post('/submit-form', async (req, res) => {
+app.get('/order', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'msc-wound-order-form.html'));
+});
+
+app.get('/onboarding', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'msc-wound-onboarding-form.html'));
+});
+
+// Form submission endpoints (you'll expand these later)
+app.post('/submit-ivr', async (req, res) => {
   try {
-    // Get the n8n webhook URL from environment variable
-    const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
-    
-    if (!n8nWebhookUrl) {
-      throw new Error('N8N webhook URL not configured');
-    }
-    
-    console.log('Forwarding form submission to n8n');
-    
-    const response = await fetch(n8nWebhookUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(req.body)
-    });
-    
-    if (!response.ok) {
-      throw new Error(`n8n responded with status: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    res.json(data);
-    
-    console.log('Form submission processed successfully');
+    // Implement form submission logic
+    res.json({ success: true, message: 'IVR form submitted' });
   } catch (error) {
-    console.error('Error forwarding to n8n:', error);
-    res.status(500).json({ 
-      error: 'Failed to process form submission',
-      message: error.message
-    });
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/submit-order', async (req, res) => {
+  try {
+    // Implement order submission logic
+    res.json({ success: true, message: 'Order submitted' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/submit-onboarding', async (req, res) => {
+  try {
+    // Implement onboarding submission logic
+    res.json({ success: true, message: 'Onboarding form submitted' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
 // Health check endpoint for Railway
 app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'ok' });
+  res.status(200).json({ 
+    status: 'ok', 
+    environment: process.env.NODE_ENV,
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ 
+    error: 'Something went wrong!',
+    message: process.env.NODE_ENV === 'production' ? 'Please try again later' : err.message
+  });
 });
 
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  console.log(`Form available at: http://localhost:${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV}`);
 });
