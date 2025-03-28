@@ -1,3 +1,129 @@
+// Add this at the beginning of your existing script
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM fully loaded and parsed');
+
+    // Ensure navigation buttons are properly set up
+    const nextToStep2Btn = document.getElementById('nextToStep2');
+    if (nextToStep2Btn) {
+        nextToStep2Btn.addEventListener('click', function(e) {
+            console.log('Next to Step 2 button clicked');
+            
+            // Basic form validation
+            const requiredFields = document.querySelectorAll('#ivrForm [data-step="1"] [required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    console.log('Invalid field:', field);
+                    field.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+
+            if (isValid) {
+                goToStep(2);
+            } else {
+                alert('Please fill in all required fields');
+            }
+        });
+    } else {
+        console.error('Next to Step 2 button not found');
+    }
+
+    // Add similar listeners for other navigation buttons
+    setupNavigationButtons();
+});
+
+function setupNavigationButtons() {
+    const navigationButtons = [
+        { id: 'nextToStep3', step: 3 },
+        { id: 'nextToStep4', step: 4 },
+        { id: 'nextToStep5', step: 5 },
+        { id: 'backToStep1', step: 1 },
+        { id: 'backToStep2', step: 2 },
+        { id: 'backToStep3', step: 3 },
+        { id: 'backToStep4', step: 4 }
+    ];
+
+    navigationButtons.forEach(button => {
+        const btn = document.getElementById(button.id);
+        if (btn) {
+            btn.addEventListener('click', function() {
+                console.log(`Navigating to step ${button.step}`);
+                goToStep(button.step);
+            });
+        } else {
+            console.warn(`Button ${button.id} not found`);
+        }
+    });
+}
+
+function goToStep(stepNumber) {
+    console.log(`Going to step ${stepNumber}`);
+
+    // Hide all steps
+    const formSteps = document.querySelectorAll('.form-step');
+    formSteps.forEach(step => {
+        step.style.display = 'none';
+    });
+    
+    // Show the target step
+    const targetStep = document.querySelector(`.form-step[data-step="${stepNumber}"]`);
+    if (targetStep) {
+        targetStep.style.display = 'block';
+    } else {
+        console.error(`Step ${stepNumber} not found`);
+    }
+    
+    // Update progress
+    updateProgress(stepNumber);
+    
+    // Scroll to top
+    window.scrollTo(0, 0);
+}
+
+function updateProgress(stepNumber) {
+    console.log(`Updating progress for step ${stepNumber}`);
+    
+    // Update progress bar
+    const progressPercentage = ((stepNumber - 1) / 4) * 100;
+    const progressBarFill = document.querySelector('.progress-bar-fill');
+    if (progressBarFill) {
+        progressBarFill.style.width = `${progressPercentage}%`;
+    }
+    
+    // Update step text
+    const currentStepElement = document.getElementById('currentStep');
+    const completionPercentageElement = document.getElementById('completionPercentage');
+    
+    if (currentStepElement) currentStepElement.textContent = stepNumber;
+    if (completionPercentageElement) completionPercentageElement.textContent = Math.round(progressPercentage);
+    
+    // Update step indicators
+    const progressSteps = document.querySelectorAll('.progress-step');
+    progressSteps.forEach(step => {
+        const stepNum = parseInt(step.getAttribute('data-step'));
+        step.classList.remove('active', 'completed');
+        
+        if (stepNum === stepNumber) {
+            step.classList.add('active');
+        } else if (stepNum < stepNumber) {
+            step.classList.add('completed');
+        }
+    });
+}
+
+// Add some basic validation styles
+const style = document.createElement('style');
+style.textContent = `
+    .is-invalid {
+        border: 2px solid red !important;
+    }
+`;
+document.head.appendChild(style);
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
