@@ -9,6 +9,12 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Debugging middleware to log incoming requests
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  next();
+});
+
 // Enhanced security middleware
 app.use(helmet({
   contentSecurityPolicy: {
@@ -36,12 +42,17 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
-// Serve static files from the public directory
+// Serve static files from the public directory with extended options
 app.use(express.static(path.join(__dirname, 'public'), {
-  maxAge: process.env.NODE_ENV === 'production' ? '1d' : 0
+  maxAge: process.env.NODE_ENV === 'production' ? '1d' : 0,
+  setHeaders: (res, filePath) => {
+    if (path.extname(filePath) === '.html') {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    }
+  }
 }));
 
-// Routes for different forms
+// Explicit routes to ensure files are served
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'msc-wound-ivr-form.html'));
 });
@@ -54,35 +65,33 @@ app.get('/onboarding', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'msc-wound-onboarding-form.html'));
 });
 
-// Form submission endpoints (you'll expand these later)
+// Debugging route to list static files
+app.get('/debug-static', (req, res) => {
+  const fs = require('fs');
+  const publicDir = path.join(__dirname, 'public');
+  
+  fs.readdir(publicDir, (err, files) => {
+    if (err) {
+      return res.status(500).json({ error: 'Could not list directory' });
+    }
+    res.json({ files });
+  });
+});
+
+// Form submission endpoints
 app.post('/submit-ivr', async (req, res) => {
+  console.log('IVR Form Submission:', req.body);
   try {
-    // Implement form submission logic
     res.json({ success: true, message: 'IVR form submitted' });
   } catch (error) {
+    console.error('IVR Submission Error:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
-app.post('/submit-order', async (req, res) => {
-  try {
-    // Implement order submission logic
-    res.json({ success: true, message: 'Order submitted' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+// Similar endpoints for other forms...
 
-app.post('/submit-onboarding', async (req, res) => {
-  try {
-    // Implement onboarding submission logic
-    res.json({ success: true, message: 'Onboarding form submitted' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Health check endpoint for Railway
+// Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({ 
     status: 'ok', 
@@ -93,7 +102,7 @@ app.get('/health', (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error('Unhandled Error:', err);
   res.status(500).json({ 
     error: 'Something went wrong!',
     message: process.env.NODE_ENV === 'production' ? 'Please try again later' : err.message
@@ -101,7 +110,18 @@ app.use((err, req, res, next) => {
 });
 
 // Start the server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV}`);
 });
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM signal received. Closing HTTP server.');
+  server.close(() => {
+    console.log('HTTP server closed.');
+    process.exit(0);
+  });
+});
+
+module.exports = app;
