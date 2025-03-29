@@ -1,127 +1,179 @@
+require('dotenv').config();
 const express = require('express');
-const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const compression = require('compression');
-require('dotenv').config();
+const path = require('path');
+const session = require('express-session');
+const { v4: uuidv4 } = require('uuid');
+const { PrismaClient } = require('@prisma/client');
 
+const prisma = new PrismaClient();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Debugging middleware to log incoming requests
-app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
-  next();
-});
-
-// Enhanced security middleware
+// Middleware
+app.use(cors());
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", 'cdnjs.cloudflare.com'],
-      styleSrc: ["'self'", "'unsafe-inline'", 'cdnjs.cloudflare.com'],
-      imgSrc: ["'self'", 'data:']
-    }
-  }
+  contentSecurityPolicy: false // Disabled for development, consider enabling for production
 }));
-
-// Compression for better performance
 app.use(compression());
-
-// CORS configuration
-const corsOptions = {
-  origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : '*',
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-};
-app.use(cors(corsOptions));
-
-// Parse JSON and URL-encoded bodies (increasing limit for file uploads and signatures)
-app.use(bodyParser.json({limit: '10mb'}));
-app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
-
-// Serve static files from the public directory with extended options
-app.use(express.static(path.join(__dirname, 'public'), {
-  maxAge: process.env.NODE_ENV === 'production' ? '1d' : 0,
-  setHeaders: (res, filePath) => {
-    if (path.extname(filePath) === '.html') {
-      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    }
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'msc-wound-care-secret',
+  genid: () => uuidv4(),
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }
 }));
 
-// Explicit routes to ensure files are served
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'msc-wound-ivr-form.html'));
-});
+// Serve static files from public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/order', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'msc-wound-order-form.html'));
-});
-
-app.get('/onboarding', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'msc-wound-onboarding-form.html'));
-});
-
-// Debugging route to list static files
-app.get('/debug-static', (req, res) => {
-  const fs = require('fs');
-  const publicDir = path.join(__dirname, 'public');
-  
-  fs.readdir(publicDir, (err, files) => {
-    if (err) {
-      return res.status(500).json({ error: 'Could not list directory' });
-    }
-    res.json({ files });
-  });
-});
-
-// Form submission endpoints
-app.post('/submit-ivr', async (req, res) => {
-  console.log('IVR Form Submission:', req.body);
+// API Routes
+// Insurance Verification Request form
+app.post('/api/submit-ivr', async (req, res) => {
   try {
-    res.json({ success: true, message: 'IVR form submitted' });
+    // Log form data
+    console.log('Form data:', req.body);
+    
+    // In a real implementation, you would save to database using Prisma
+    // Example:
+    // const formData = await prisma.insuranceVerificationRequest.create({
+    //   data: {
+    //     patientName: req.body.patientName,
+    //     patientDob: new Date(req.body.patientDob),
+    //     ...other fields...
+    //   }
+    // });
+    
+    res.status(200).json({
+      success: true,
+      message: 'Insurance verification request submitted successfully'
+    });
   } catch (error) {
-    console.error('IVR Submission Error:', error);
-    res.status(500).json({ error: error.message });
+    console.error('Error processing IVR form submission:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Form submission failed',
+      error: error.message
+    });
   }
 });
 
-// Similar endpoints for other forms...
+// Product Education form
+app.post('/api/submit-education', async (req, res) => {
+  try {
+    console.log('Education request data:', req.body);
+    
+    // Similar to above, save to database using Prisma
+    
+    res.status(200).json({
+      success: true,
+      message: 'Education request submitted successfully'
+    });
+  } catch (error) {
+    console.error('Error processing education request:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Request submission failed',
+      error: error.message
+    });
+  }
+});
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ 
-    status: 'ok', 
-    environment: process.env.NODE_ENV,
-    timestamp: new Date().toISOString()
-  });
+// Order form
+app.post('/api/submit-order', async (req, res) => {
+  try {
+    console.log('Order data:', req.body);
+    
+    // Similar to above, save to database using Prisma
+    
+    res.status(200).json({
+      success: true,
+      message: 'Order submitted successfully'
+    });
+  } catch (error) {
+    console.error('Error processing order submission:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Order submission failed',
+      error: error.message
+    });
+  }
+});
+
+// Onboarding form
+app.post('/api/submit-onboarding', async (req, res) => {
+  try {
+    console.log('Onboarding data:', req.body);
+    
+    // Similar to above, save to database using Prisma
+    
+    res.status(200).json({
+      success: true,
+      message: 'Onboarding form submitted successfully'
+    });
+  } catch (error) {
+    console.error('Error processing onboarding submission:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Onboarding submission failed',
+      error: error.message
+    });
+  }
+});
+
+// Webhook endpoint for n8n integration
+app.post('/api/webhook', async (req, res) => {
+  try {
+    console.log('Received webhook data:', req.body);
+    
+    // Process the webhook data
+    // For example, n8n might send status updates for form processing
+    
+    res.status(200).json({
+      success: true,
+      message: 'Webhook received successfully'
+    });
+  } catch (error) {
+    console.error('Error processing webhook:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Webhook processing failed',
+      error: error.message
+    });
+  }
+});
+
+// Default route for root path
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error('Unhandled Error:', err);
-  res.status(500).json({ 
-    error: 'Something went wrong!',
-    message: process.env.NODE_ENV === 'production' ? 'Please try again later' : err.message
+  console.error(err.stack);
+  res.status(500).json({
+    success: false,
+    message: 'Something went wrong',
+    error: process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message
   });
 });
 
 // Start the server
-const server = app.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV}`);
 });
 
 // Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received. Closing HTTP server.');
-  server.close(() => {
-    console.log('HTTP server closed.');
-    process.exit(0);
-  });
+process.on('SIGTERM', async () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  await prisma.$disconnect();
+  process.exit(0);
 });
-
-module.exports = app;
