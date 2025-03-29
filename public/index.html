@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSC Wound Care Forms</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="/css/form-styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <header class="bg-white border-b border-gray-200 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center py-4">
+                <h1 class="text-2xl font-bold text-blue-800">MSC Wound Care Forms</h1>
+                <nav class="w-full md:w-auto mt-4 md:mt-0">
+                    <ul class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-8">
+                        <li>
+                            <a href="#" id="ivr-tab" class="font-medium text-blue-800 border-b-2 border-blue-800 pb-2">Insurance Verification Request</a>
+                        </li>
+                        <li>
+                            <a href="#" id="product-education-tab" class="font-medium text-gray-600 hover:text-blue-800 pb-2">Product Education</a>
+                        </li>
+                        <li>
+                            <a href="#" id="order-tab" class="font-medium text-gray-600 hover:text-blue-800 pb-2">Order Form</a>
+                        </li>
+                        <li>
+                            <a href="#" id="onboarding-tab" class="font-medium text-gray-600 hover:text-blue-800 pb-2">Onboarding</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Form Container -->
+        <div class="form-container">
+            <!-- Insurance Verification Request Form -->
+            <div id="ivr-form" class="form-section">
+                <!-- Copy the IVR form HTML here -->
+            </div>
+            
+            <!-- Product Education Form -->
+            <div id="product-education-form" class="form-section hidden">
+                <!-- Product Education form HTML here -->
+            </div>
+            
+            <!-- Order Form -->
+            <div id="order-form" class="form-section hidden">
+                <!-- Order form HTML here -->
+            </div>
+            
+            <!-- Onboarding Form -->
+            <div id="onboarding-form" class="form-section hidden">
+                <!-- Onboarding form HTML here -->
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-100 py-4 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-sm text-gray-600">
+                    &copy; 2025 MSC Wound Care. All rights reserved.
+                </div>
+                <div class="mt-2 md:mt-0">
+                    <ul class="flex space-x-4 text-sm">
+                        <li><a href="#" class="text-blue-600 hover:underline">Privacy Policy</a></li>
+                        <li><a href="#" class="text-blue-600 hover:underline">Terms of Service</a></li>
+                        <li><a href="#" class="text-blue-600 hover:underline">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/components/form-utils.js"></script>
+    <script src="/components/form-validation.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab navigation code here
+            const tabs = [
+                { id: 'ivr-tab', formId: 'ivr-form' },
+                { id: 'product-education-tab', formId: 'product-education-form' },
+                { id: 'order-tab', formId: 'order-form' },
+                { id: 'onboarding-tab', formId: 'o
