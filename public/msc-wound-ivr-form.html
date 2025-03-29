@@ -1,128 +1,3 @@
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM fully loaded and parsed');
-
-    // Ensure navigation buttons are properly set up
-    const nextToStep2Btn = document.getElementById('nextToStep2');
-    if (nextToStep2Btn) {
-        nextToStep2Btn.addEventListener('click', function(e) {
-            console.log('Next to Step 2 button clicked');
-            
-            // Basic form validation
-            const requiredFields = document.querySelectorAll('#ivrForm [data-step="1"] [required]');
-            let isValid = true;
-            
-            requiredFields.forEach(field => {
-                if (!field.value.trim()) {
-                    console.log('Invalid field:', field);
-                    field.classList.add('is-invalid');
-                    isValid = false;
-                } else {
-                    field.classList.remove('is-invalid');
-                }
-            });
-
-            if (isValid) {
-                goToStep(2);
-            } else {
-                alert('Please fill in all required fields');
-            }
-        });
-    } else {
-        console.error('Next to Step 2 button not found');
-    }
-
-    // Add similar listeners for other navigation buttons
-    setupNavigationButtons();
-});
-
-function setupNavigationButtons() {
-    const navigationButtons = [
-        { id: 'nextToStep3', step: 3 },
-        { id: 'nextToStep4', step: 4 },
-        { id: 'nextToStep5', step: 5 },
-        { id: 'backToStep1', step: 1 },
-        { id: 'backToStep2', step: 2 },
-        { id: 'backToStep3', step: 3 },
-        { id: 'backToStep4', step: 4 }
-    ];
-
-    navigationButtons.forEach(button => {
-        const btn = document.getElementById(button.id);
-        if (btn) {
-            btn.addEventListener('click', function() {
-                console.log(`Navigating to step ${button.step}`);
-                goToStep(button.step);
-            });
-        } else {
-            console.warn(`Button ${button.id} not found`);
-        }
-    });
-}
-
-function goToStep(stepNumber) {
-    console.log(`Going to step ${stepNumber}`);
-
-    // Hide all steps
-    const formSteps = document.querySelectorAll('.form-step');
-    formSteps.forEach(step => {
-        step.style.display = 'none';
-    });
-    
-    // Show the target step
-    const targetStep = document.querySelector(`.form-step[data-step="${stepNumber}"]`);
-    if (targetStep) {
-        targetStep.style.display = 'block';
-    } else {
-        console.error(`Step ${stepNumber} not found`);
-    }
-    
-    // Update progress
-    updateProgress(stepNumber);
-    
-    // Scroll to top
-    window.scrollTo(0, 0);
-}
-
-function updateProgress(stepNumber) {
-    console.log(`Updating progress for step ${stepNumber}`);
-    
-    // Update progress bar
-    const progressPercentage = ((stepNumber - 1) / 4) * 100;
-    const progressBarFill = document.querySelector('.progress-bar-fill');
-    if (progressBarFill) {
-        progressBarFill.style.width = `${progressPercentage}%`;
-    }
-    
-    // Update step text
-    const currentStepElement = document.getElementById('currentStep');
-    const completionPercentageElement = document.getElementById('completionPercentage');
-    
-    if (currentStepElement) currentStepElement.textContent = stepNumber;
-    if (completionPercentageElement) completionPercentageElement.textContent = Math.round(progressPercentage);
-    
-    // Update step indicators
-    const progressSteps = document.querySelectorAll('.progress-step');
-    progressSteps.forEach(step => {
-        const stepNum = parseInt(step.getAttribute('data-step'));
-        step.classList.remove('active', 'completed');
-        
-        if (stepNum === stepNumber) {
-            step.classList.add('active');
-        } else if (stepNum < stepNumber) {
-            step.classList.add('completed');
-        }
-    });
-}
-
-// Add some basic validation styles
-const style = document.createElement('style');
-style.textContent = `
-    .is-invalid {
-        border: 2px solid red !important;
-    }
-`;
-document.head.appendChild(style);
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1885,6 +1760,44 @@ document.head.appendChild(style);
     </main>
 
     <script>
+      <script>
+        // First, our debug script
+        (function() {
+            console.log('Debug script loaded');
+            
+            // Log when the page is fully loaded
+            window.addEventListener('load', function() {
+                console.log('Page fully loaded');
+                
+                // Log all buttons
+                const buttons = document.querySelectorAll('button');
+                console.log('Buttons found:', buttons.length);
+                buttons.forEach((btn, index) => {
+                    console.log(`Button ${index}:`, {
+                        id: btn.id,
+                        text: btn.textContent,
+                        type: btn.type
+                    });
+                });
+                
+                // Attach emergency click handlers
+                buttons.forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        console.log('Button clicked:', {
+                            id: this.id,
+                            text: this.textContent
+                        });
+                    });
+                });
+            });
+
+            // Attach global error handler
+            window.addEventListener('error', function(event) {
+                console.error('Unhandled error:', event.error);
+            });
+        })();
+
+        // Then, our navigation script
         // DOM Elements
         const tabs = document.querySelectorAll('.tab');
         const tabContents = document.querySelectorAll('.tab-content');
@@ -1893,87 +1806,59 @@ document.head.appendChild(style);
         const progressBarFill = document.querySelector('.progress-bar-fill');
         const currentStepElement = document.getElementById('currentStep');
         const completionPercentageElement = document.getElementById('completionPercentage');
-        const ivrForm = document.getElementById('ivrForm');
-        const educationForm = document.getElementById('educationForm');
-        const responseContainer = document.getElementById('responseContainer');
-        const responseTitle = document.getElementById('responseTitle');
-        const responseContent = document.getElementById('responseContent');
-        const educationSubmitBtn = document.getElementById('educationSubmitBtn');
         
         // Navigation buttons
-        const nextToStep2Btn = document.getElementById('nextToStep2');
-        const nextToStep3Btn = document.getElementById('nextToStep3');
-        const nextToStep4Btn = document.getElementById('nextToStep4');
-        const nextToStep5Btn = document.getElementById('nextToStep5');
-        const backToStep1Btn = document.getElementById('backToStep1');
-        const backToStep2Btn = document.getElementById('backToStep2');
-        const backToStep3Btn = document.getElementById('backToStep3');
-        const backToStep4Btn = document.getElementById('backToStep4');
-        const submitFormBtn = document.getElementById('submitForm');
-        
-        // Conditional fields
-        const otherPlaceOfServiceGroup = document.getElementById('otherPlaceOfServiceGroup');
-        const snfDetailsGroup = document.getElementById('snfDetailsGroup');
-        const woundOtherSpecifyGroup = document.getElementById('woundOtherSpecifyGroup');
-        const globalPeriodDetailsGroup = document.getElementById('globalPeriodDetailsGroup');
-        const clinicalStudyNameGroup = document.getElementById('clinicalStudyNameGroup');
-        
-        // Signature pad
-        let signaturePad;
-        
-        // Date fields default to today
+        const navigationButtons = [
+            { id: 'nextToStep2', targetStep: 2 },
+            { id: 'nextToStep3', targetStep: 3 },
+            { id: 'nextToStep4', targetStep: 4 },
+            { id: 'nextToStep5', targetStep: 5 },
+            { id: 'backToStep1', targetStep: 1 },
+            { id: 'backToStep2', targetStep: 2 },
+            { id: 'backToStep3', targetStep: 3 },
+            { id: 'backToStep4', targetStep: 4 }
+        ];
+
         document.addEventListener('DOMContentLoaded', function() {
-            const today = new Date().toISOString().split('T')[0];
-            if (document.getElementById('requestDate')) {
-                document.getElementById('requestDate').value = today;
-            }
-            if (document.getElementById('signatureDate')) {
-                document.getElementById('signatureDate').value = today;
-            }
-            
-            // Initialize signature pad
-            const canvas = document.getElementById('signaturePad');
-            if (canvas) {
-                signaturePad = new SignaturePad(canvas, {
-                    backgroundColor: 'rgb(255, 255, 255)',
-                    penColor: 'rgb(0, 0, 0)'
-                });
-                
-                // Clear signature button
-                document.getElementById('clearSignature').addEventListener('click', function() {
-                    signaturePad.clear();
-                    document.getElementById('signature').value = '';
-                });
-            }
-            
-            // Setup conditional fields
-            setupConditionalFields();
-            
-            // Setup wound size calculation
-            setupWoundSizeCalculation();
-        });
-        
-        // Tab Switching
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Remove active class from all tabs and contents
-                tabs.forEach(t => t.classList.remove('active'));
-                tabContents.forEach(c => c.classList.remove('active'));
-                
-                // Add active class to clicked tab
-                tab.classList.add('active');
-                
-                // Show corresponding content
-                const tabId = tab.getAttribute('data-tab');
-                document.getElementById(tabId).classList.add('active');
-                
-                // Reset response container
-                hideResponse();
+            console.log('Form navigation script loaded');
+
+            // Add click event listeners to navigation buttons
+            navigationButtons.forEach(button => {
+                const buttonElement = document.getElementById(button.id);
+                if (buttonElement) {
+                    buttonElement.addEventListener('click', function() {
+                        console.log(`Navigating to step ${button.targetStep}`);
+                        goToStep(button.targetStep);
+                    });
+                } else {
+                    console.warn(`Navigation button ${button.id} not found`);
+                }
             });
+
+            // Tab Switching
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    tab.classList.add('active');
+                    
+                    // Show corresponding content
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            // Additional form initialization
+            initializeFormFields();
         });
-        
-        // Multi-step form navigation
+
+        // Form step navigation function
         function goToStep(stepNumber) {
+            console.log(`Attempting to go to step ${stepNumber}`);
+
             // Hide all steps
             formSteps.forEach(step => {
                 step.style.display = 'none';
@@ -1983,18 +1868,34 @@ document.head.appendChild(style);
             const currentStep = document.querySelector(`.form-step[data-step="${stepNumber}"]`);
             if (currentStep) {
                 currentStep.style.display = 'block';
+            } else {
+                console.error(`Step ${stepNumber} not found`);
+                return;
             }
             
             // Update progress
             updateProgress(stepNumber);
+            
+            // Scroll to top of the page
+            window.scrollTo(0, 0);
         }
-        
+
+        // Progress update function
         function updateProgress(stepNumber) {
+            console.log(`Updating progress for step ${stepNumber}`);
+            
             // Update progress bar
-            const progressPercentage = (stepNumber - 1) * 20;
-            progressBarFill.style.width = `${progressPercentage}%`;
+            const progressPercentage = ((stepNumber - 1) / 4) * 100;
+            if (progressBarFill) {
+                progressBarFill.style.width = `${progressPercentage}%`;
+            }
+            
+            // Update step text
+            if (currentStepElement) currentStepElement.textContent = stepNumber;
+            if (completionPercentageElement) completionPercentageElement.textContent = Math.round(progressPercentage);
             
             // Update step indicators
+            const progressSteps = document.querySelectorAll('.progress-step');
             progressSteps.forEach(step => {
                 const stepNum = parseInt(step.getAttribute('data-step'));
                 step.classList.remove('active', 'completed');
@@ -2005,8 +1906,40 @@ document.head.appendChild(style);
                     step.classList.add('completed');
                 }
             });
+        }
+
+        // Initialize form fields
+        function initializeFormFields() {
+            const today = new Date().toISOString().split('T')[0];
             
-            // Update text indicators
-            currentStepElement.textContent = stepNumber;
-            
-            // Calculate form completion percentage based on required fields
+            // Set default date for request date
+            const requestDateField = document.getElementById('requestDate');
+            if (requestDateField) {
+                requestDateField.value = today;
+            }
+
+            // Set default date for signature
+            const signatureDateField = document.getElementById('signatureDate');
+            if (signatureDateField) {
+                signatureDateField.value = today;
+            }
+
+            // Initialize signature pad
+            const canvas = document.getElementById('signaturePad');
+            if (canvas && window.SignaturePad) {
+                const signaturePad = new SignaturePad(canvas, {
+                    backgroundColor: 'rgb(255, 255, 255)',
+                    penColor: 'rgb(0, 0, 0)'
+                });
+                
+                // Clear signature button
+                const clearSignatureBtn = document.getElementById('clearSignature');
+                if (clearSignatureBtn) {
+                    clearSignatureBtn.addEventListener('click', function() {
+                        signaturePad.clear();
+                        document.getElementById('signature').value = '';
+                    });
+                }
+            }
+        }
+    </script>
