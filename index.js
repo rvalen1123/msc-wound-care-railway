@@ -206,18 +206,3 @@ app.get('/api/products/:productId', async (req, res) => {
     res.status(500).json({ success: false, message: 'Failed to fetch product details' });
   }
 });
-
-{
-  "$schema": "https://railway.app/railway.schema.json",
-  "build": {
-    "builder": "NIXPACKS",
-    "buildCommand": "npm install && npm run prisma:generate"
-  },
-  "deploy": {
-    "startCommand": "npm run prisma:deploy && npm start",
-    "healthcheckPath": "/",
-    "healthcheckTimeout": 300,
-    "restartPolicyType": "ON_FAILURE",
-    "restartPolicyMaxRetries": 3
-  }
-}
