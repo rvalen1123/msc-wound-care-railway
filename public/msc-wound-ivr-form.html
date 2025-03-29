@@ -3,1943 +3,446 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MSC Wound Care IVR Form</title>
-    <style>
-        :root {
-            --primary: #0056b3;
-            --primary-dark: #003d82;
-            --secondary: #6c757d;
-            --light: #f8f9fa;
-            --dark: #343a40;
-            --success: #28a745;
-            --danger: #dc3545;
-            --warning: #ffc107;
-            --info: #17a2b8;
-            --white: #ffffff;
-            --border-radius: 0.25rem;
-            --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-            --transition: all 0.2s ease-in-out;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--dark);
-            background-color: #f5f7fa;
-            padding: 0;
-            margin: 0;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem;
-        }
-
-        header {
-            background-color: var(--primary);
-            color: var(--white);
-            padding: 1rem 0;
-            box-shadow: var(--box-shadow);
-        }
-
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        header h1 {
-            font-size: 1.5rem;
-            margin: 0;
-        }
-
-        main {
-            padding: 2rem 0;
-        }
-
-        .card {
-            background-color: var(--white);
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-        }
-
-        .card-header {
-            padding: 1rem;
-            background-color: var(--light);
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        .card-body {
-            padding: 1.5rem;
-        }
-
-        .card-footer {
-            padding: 1rem;
-            background-color: var(--light);
-            border-top: 1px solid #dee2e6;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="date"],
-        input[type="number"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 0.5rem 0.75rem;
-            font-size: 1rem;
-            line-height: 1.5;
-            color: var(--dark);
-            background-color: var(--white);
-            background-clip: padding-box;
-            border: 1px solid #ced4da;
-            border-radius: var(--border-radius);
-            transition: var(--transition);
-        }
-
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="tel"]:focus,
-        input[type="date"]:focus,
-        input[type="number"]:focus,
-        select:focus,
-        textarea:focus {
-            border-color: var(--primary);
-            outline: 0;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            margin-right: 0.5rem;
-        }
-
-        .multiselect {
-            border: 1px solid #ced4da;
-            border-radius: var(--border-radius);
-            padding: 0.5rem;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .multiselect label {
-            font-weight: normal;
-            margin-bottom: 0.25rem;
-        }
-
-        .btn {
-            display: inline-block;
-            font-weight: 500;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: middle;
-            user-select: none;
-            border: 1px solid transparent;
-            padding: 0.5rem 1rem;
-            font-size: 1rem;
-            line-height: 1.5;
-            border-radius: var(--border-radius);
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            color: var(--white);
-            background-color: var(--primary);
-            border-color: var(--primary);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-            border-color: var(--primary-dark);
-        }
-
-        .btn-secondary {
-            color: var(--white);
-            background-color: var(--secondary);
-            border-color: var(--secondary);
-        }
-
-        .btn-secondary:hover {
-            background-color: #5a6268;
-            border-color: #545b62;
-        }
-
-        .btn-block {
-            display: block;
-            width: 100%;
-        }
-
-        .tab-group {
-            display: flex;
-            margin-bottom: 1.5rem;
-        }
-
-        .tab {
-            flex: 1;
-            padding: 0.75rem;
-            text-align: center;
-            background-color: var(--light);
-            border-bottom: 3px solid transparent;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .tab.active {
-            border-bottom-color: var(--primary);
-            font-weight: 500;
-        }
-
-        .tab:hover:not(.active) {
-            background-color: #e9ecef;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .form-section {
-            margin-bottom: 1.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        .form-section:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .form-section-title {
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #dee2e6;
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
-
-        .form-subsection {
-            margin-bottom: 1rem;
-            padding: 1rem;
-            background-color: rgba(0, 0, 0, 0.02);
-            border-radius: var(--border-radius);
-        }
-
-        .form-subsection-title {
-            margin-bottom: 0.75rem;
-            font-size: 1rem;
-            font-weight: 500;
-        }
-
-        .form-row {
-            display: flex;
-            flex-wrap: wrap;
-            margin-right: -0.5rem;
-            margin-left: -0.5rem;
-        }
-
-        .form-col {
-            flex: 1 0 0%;
-            padding-right: 0.5rem;
-            padding-left: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .form-col-full {
-            flex: 0 0 100%;
-            max-width: 100%;
-            padding-right: 0.5rem;
-            padding-left: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .form-col-half {
-            flex: 0 0 50%;
-            max-width: 50%;
-            padding-right: 0.5rem;
-            padding-left: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        @media (max-width: 768px) {
-            .form-row {
-                flex-direction: column;
-            }
-            
-            .form-col, .form-col-half {
-                flex: 1 0 100%;
-                max-width: 100%;
-            }
-        }
-
-        .error-message {
-            color: var(--danger);
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-        }
-
-        .success-message {
-            color: var(--success);
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-        }
-
-        .required-indicator {
-            color: var(--danger);
-            margin-left: 0.2rem;
-        }
-
-        .field-description {
-            font-size: 0.875rem;
-            color: var(--secondary);
-            margin-top: 0.25rem;
-        }
-
-        #responseContainer {
-            display: none;
-            margin-top: 1.5rem;
-            padding: 1rem;
-            border-radius: var(--border-radius);
-            background-color: var(--light);
-        }
-
-        #responseContainer.success {
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-        }
-
-        #responseContainer.error {
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 1rem;
-            height: 1rem;
-            border: 0.2rem solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--white);
-            animation: spin 1s ease-in-out infinite;
-            margin-right: 0.5rem;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .btn-submit {
-            position: relative;
-        }
-
-        .btn-submit:disabled {
-            cursor: not-allowed;
-            opacity: 0.65;
-        }
-
-        .btn-submit[data-loading="true"] .btn-text {
-            visibility: hidden;
-        }
-
-        .btn-submit[data-loading="true"]::after {
-            content: "";
-            position: absolute;
-            width: 1rem;
-            height: 1rem;
-            top: calc(50% - 0.5rem);
-            left: calc(50% - 0.5rem);
-            border: 0.2rem solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--white);
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        .signature-pad-container {
-            border: 1px solid #ced4da;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            margin-bottom: 0.5rem;
-        }
-
-        .signature-pad {
-            width: 100%;
-            height: 150px;
-            background-color: #fff;
-        }
-
-        .signature-actions {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 0.5rem;
-        }
-
-        .conditional-field {
-            display: none;
-        }
-
-        .progress-container {
-            margin-bottom: 2rem;
-        }
-
-        .progress-bar {
-            height: 5px;
-            background-color: #e9ecef;
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background-color: var(--primary);
-            transition: width 0.3s ease;
-        }
-
-        .progress-text {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 0.5rem;
-            font-size: 0.875rem;
-            color: var(--secondary);
-        }
-
-        .progress-steps {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
-
-        .progress-step {
-            text-align: center;
-            flex: 1;
-            position: relative;
-        }
-
-        .progress-step-number {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background-color: #e9ecef;
-            color: var(--secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 0.5rem;
-            font-weight: 500;
-            position: relative;
-            z-index: 1;
-        }
-
-        .progress-step.active .progress-step-number {
-            background-color: var(--primary);
-            color: var(--white);
-        }
-
-        .progress-step.completed .progress-step-number {
-            background-color: var(--success);
-            color: var(--white);
-        }
-
-        .progress-step-label {
-            font-size: 0.8rem;
-            color: var(--secondary);
-        }
-
-        .progress-step.active .progress-step-label {
-            color: var(--primary);
-            font-weight: 500;
-        }
-
-        .progress-step-line {
-            position: absolute;
-            top: 15px;
-            height: 2px;
-            background-color: #e9ecef;
-            width: 100%;
-            left: -50%;
-            z-index: 0;
-        }
-
-        .progress-step:first-child .progress-step-line {
-            display: none;
-        }
-
-        .progress-step.completed .progress-step-line {
-            background-color: var(--success);
-        }
-    </style>
+    <title>MSC Wound Care Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="/css/form-styles.css" rel="stylesheet">
 </head>
-<body>
-    <header>
-        <div class="container">
-            <h1>MSC Wound Care IVR Form</h1>
+<body class="bg-gray-100">
+    <header class="bg-white border-b border-gray-200 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center py-4">
+                <h1 class="text-2xl font-bold text-blue-800">MSC Wound Care Portal</h1>
+                <nav class="w-full md:w-auto mt-4 md:mt-0">
+                    <ul class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-8">
+                        <li>
+                            <a href="#" id="ivr-tab" class="font-medium text-blue-800 border-b-2 border-blue-800 pb-2">Insurance Verification Request</a>
+                        </li>
+                        <li>
+                            <a href="#" id="product-education-tab" class="font-medium text-gray-600 hover:text-blue-800 pb-2">Product Education</a>
+                        </li>
+                        <li>
+                            <a href="#" id="order-tab" class="font-medium text-gray-600 hover:text-blue-800 pb-2">Order Form</a>
+                        </li>
+                        <li>
+                            <a href="#" id="onboarding-tab" class="font-medium text-gray-600 hover:text-blue-800 pb-2">Onboarding</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </header>
-    
-    <main>
-        <div class="container">
-            <div class="card">
-                <div class="card-header">
-                    <div class="tab-group">
-                        <div class="tab active" data-tab="ivr-form">Insurance Verification Request</div>
-                        <div class="tab" data-tab="education-request">Product Education</div>
-                    </div>
-                </div>
-                
-                <div class="card-body">
-                    <!-- IVR Form Tab Content -->
-                    <div class="tab-content active" id="ivr-form">
-                        <div class="progress-container">
-                            <div class="progress-steps">
-                                <div class="progress-step active" data-step="1">
-                                    <div class="progress-step-line"></div>
-                                    <div class="progress-step-number">1</div>
-                                    <div class="progress-step-label">Form Setup</div>
-                                </div>
-                                <div class="progress-step" data-step="2">
-                                    <div class="progress-step-line"></div>
-                                    <div class="progress-step-number">2</div>
-                                    <div class="progress-step-label">Patient & Insurance</div>
-                                </div>
-                                <div class="progress-step" data-step="3">
-                                    <div class="progress-step-line"></div>
-                                    <div class="progress-step-number">3</div>
-                                    <div class="progress-step-label">Provider & Facility</div>
-                                </div>
-                                <div class="progress-step" data-step="4">
-                                    <div class="progress-step-line"></div>
-                                    <div class="progress-step-number">4</div>
-                                    <div class="progress-step-label">Wound & Product</div>
-                                </div>
-                                <div class="progress-step" data-step="5">
-                                    <div class="progress-step-line"></div>
-                                    <div class="progress-step-number">5</div>
-                                    <div class="progress-step-label">Review & Submit</div>
-                                </div>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Form Container - All forms will be within this container -->
+        <div class="form-container">
+            <!-- Insurance Verification Request Form -->
+            <div id="ivr-form" class="form-section active">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <!-- Progress Bar -->
+                    <div class="progress-container mb-8">
+                        <div class="flex justify-between relative">
+                            <div class="progress-step active" data-step="1">
+                                <div class="progress-step-number bg-green-500 text-white">1</div>
+                                <div class="progress-step-label">Form Setup</div>
                             </div>
-                            <div class="progress-bar">
-                                <div class="progress-bar-fill" style="width: 20%;"></div>
+                            <div class="progress-step" data-step="2">
+                                <div class="progress-step-number bg-gray-300 text-gray-700">2</div>
+                                <div class="progress-step-label">Patient & Insurance</div>
                             </div>
-                            <div class="progress-text">
-                                <span>Step <span id="currentStep">1</span> of 5</span>
-                                <span><span id="completionPercentage">0</span>% Complete</span>
+                            <div class="progress-step" data-step="3">
+                                <div class="progress-step-number bg-gray-300 text-gray-700">3</div>
+                                <div class="progress-step-label">Provider & Facility</div>
+                            </div>
+                            <div class="progress-step" data-step="4">
+                                <div class="progress-step-number bg-gray-300 text-gray-700">4</div>
+                                <div class="progress-step-label">Wound & Product</div>
+                            </div>
+                            <div class="progress-step" data-step="5">
+                                <div class="progress-step-number bg-gray-300 text-gray-700">5</div>
+                                <div class="progress-step-label">Review & Submit</div>
+                            </div>
+                            <!-- Progress Line -->
+                            <div class="absolute h-1 bg-gray-300 top-4 left-0 right-0 z-0">
+                                <div class="h-full bg-green-500" style="width: 20%;"></div>
                             </div>
                         </div>
-
-                        <form id="ivrForm">
-                            <!-- Step 1: Form Setup -->
-                            <div class="form-step" data-step="1">
-                                <div class="form-section">
-                                    <div class="form-section-title">Form Setup</div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="manufacturer">Manufacturer <span class="required-indicator">*</span></label>
-                                                <select id="manufacturer" name="manufacturer" required>
-                                                    <option value="">Select Manufacturer</option>
-                                                    <option value="ACZ_Distribution">ACZ Distribution</option>
-                                                    <option value="Advanced_Solution">Advanced Solution</option>
-                                                    <option value="MedLife_Solutions">MedLife Solutions</option>
-                                                    <option value="BioWound_Solutions">BioWound Solutions</option>
-                                                    <option value="Imbed_Biosciences">Imbed Biosciences (Microlyte)</option>
-                                                    <option value="Extremity_Care">Extremity Care</option>
-                                                    <option value="StimLabs">StimLabs</option>
-                                                    <option value="Centurion_Therapeutics">Centurion Therapeutics</option>
-                                                </select>
-                                                <div class="field-description">Select the manufacturer for the product being requested</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-section">
-                                    <div class="form-section-title">Request Information</div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="requestType">Request Type <span class="required-indicator">*</span></label>
-                                                <select id="requestType" name="requestInfo.requestType" required>
-                                                    <option value="">Select Request Type</option>
-                                                    <option value="new_request">New Request</option>
-                                                    <option value="reverification">Re-verification</option>
-                                                    <option value="additional_applications">Additional Applications</option>
-                                                    <option value="new_insurance">New Insurance</option>
-                                                </select>
-                                                <div class="field-description">Type of insurance verification request</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="requestDate">Request Date <span class="required-indicator">*</span></label>
-                                                <input type="date" id="requestDate" name="requestInfo.requestDate" required>
-                                                <div class="field-description">Date of the request</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="salesRepName">Sales Representative <span class="required-indicator">*</span></label>
-                                                <input type="text" id="salesRepName" name="requestInfo.salesRepName" required>
-                                                <div class="field-description">Name of the sales representative</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="salesRepEmail">Sales Rep Email</label>
-                                                <input type="email" id="salesRepEmail" name="requestInfo.salesRepEmail">
-                                                <div class="field-description">Email of the sales representative</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="additionalEmails">Additional Notification Emails</label>
-                                                <input type="text" id="additionalEmails" name="requestInfo.additionalNotificationEmails">
-                                                <div class="field-description">Additional emails for notification (BAA required)</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-row">
-                                    <div class="form-col">
-                                        <button type="button" class="btn btn-primary btn-block" id="nextToStep2">Continue to Patient Information</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Step 2: Patient & Insurance -->
-                            <div class="form-step" data-step="2" style="display: none;">
-                                <div class="form-section">
-                                    <div class="form-section-title">Patient Information</div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="patientName">Patient Name <span class="required-indicator">*</span></label>
-                                                <input type="text" id="patientName" name="patientInfo.patientName" required>
-                                                <div class="field-description">Full name of the patient</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="patientDOB">Date of Birth <span class="required-indicator">*</span></label>
-                                                <input type="date" id="patientDOB" name="patientInfo.patientDOB" required>
-                                                <div class="field-description">Patient's date of birth</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="patientGender">Gender</label>
-                                                <select id="patientGender" name="patientInfo.patientGender">
-                                                    <option value="">Select Gender</option>
-                                                    <option value="male">Male</option>
-                                                    <option value="female">Female</option>
-                                                </select>
-                                                <div class="field-description">Patient's gender</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="patientPhone">Phone Number</label>
-                                                <input type="tel" id="patientPhone" name="patientInfo.patientPhone">
-                                                <div class="field-description">Patient's contact phone number</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col-full">
-                                            <div class="form-group">
-                                                <label for="patientAddressLine1">Address Line 1</label>
-                                                <input type="text" id="patientAddressLine1" name="patientInfo.patientAddressLine1">
-                                                <div class="field-description">Patient's street address</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col-full">
-                                            <div class="form-group">
-                                                <label for="patientAddressLine2">Address Line 2</label>
-                                                <input type="text" id="patientAddressLine2" name="patientInfo.patientAddressLine2">
-                                                <div class="field-description">Additional address information</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="patientCity">City</label>
-                                                <input type="text" id="patientCity" name="patientInfo.patientCity">
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="patientState">State</label>
-                                                <input type="text" id="patientState" name="patientInfo.patientState">
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="patientZipCode">ZIP Code</label>
-                                                <input type="text" id="patientZipCode" name="patientInfo.patientZipCode">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="patientFaxEmail">Fax/Email</label>
-                                                <input type="text" id="patientFaxEmail" name="patientInfo.patientFaxEmail">
-                                                <div class="field-description">Patient's fax or email for contact</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="patientCaregiverInfo">Caregiver Information</label>
-                                                <input type="text" id="patientCaregiverInfo" name="patientInfo.patientCaregiverInfo">
-                                                <div class="field-description">Contact information for patient's caregiver</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group checkbox-group">
-                                                <input type="checkbox" id="patientContactPermission" name="patientInfo.patientContactPermission">
-                                                <label for="patientContactPermission">Permission to Contact Patient</label>
-                                                <div class="field-description">Whether the patient can be contacted directly</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-section">
-                                    <div class="form-section-title">Insurance Information</div>
-                                    
-                                    <div class="form-subsection">
-                                        <div class="form-subsection-title">Primary Insurance</div>
-                                        
-                                        <div class="form-row">
-                                            <div class="form-col">
-                                                <div class="form-group">
-                                                    <label for="primaryInsuranceName">Insurance Name <span class="required-indicator">*</span></label>
-                                                    <input type="text" id="primaryInsuranceName" name="insuranceInfo.primaryInsurance.primaryInsuranceName" required>
-                                                    <div class="field-description">Name of primary insurance carrier</div>
-                                                </div>
-                                            </div>
-                                            <div class="form-col">
-                                                <div class="form-group">
-                                                    <label for="primaryPolicyNumber">Policy Number <span class="required-indicator">*</span></label>
-                                                    <input type="text" id="primaryPolicyNumber" name="insuranceInfo.primaryInsurance.primaryPolicyNumber" required>
-                                                    <div class="field-description">Primary insurance policy/ID number</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-row">
-                                            <div class="form-col">
-                                                <div class="form-group">
-                                                    <label for="primarySubscriberName">Subscriber Name</label>
-                                                    <input type="text" id="primarySubscriberName" name="insuranceInfo.primaryInsurance.primarySubscriberName">
-                                                    <div class="field-description">Name of the primary policyholder</div>
-                                                </div>
-                                            </div>
-                                            <div class="form-col">
-                                                <div class="form-group">
-                                                    <label for="primarySubscriberDOB">Subscriber DOB</label>
-                                                    <input type="date" id="primarySubscriberDOB" name="insuranceInfo.primaryInsurance.primarySubscriberDOB">
-                                                    <div class="field-description">Date of birth of the primary policyholder</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-row">
-                                            <div class="form-col">
-                                                <div class="form-group">
-                                                    <label for="primaryPayerPhone">Payer Phone <span class="required-indicator">*</span></label>
-                                                    <input type="tel" id="primaryPayerPhone" name="insuranceInfo.primaryInsurance.primaryPayerPhone" required>
-                                                    <div class="field-description">Phone number for the insurance company</div>
-                                                </div>
-                                            </div>
-                                            <div class="form-col">
-                                                <div class="form-group">
-                                                    <label for="primaryPlanType">Plan Type</label>
-                                                    <select id="primaryPlanType" name="insuranceInfo.primaryInsurance.primaryPlanType">
-                                                        <option value="">Select Plan Type</option>
-                                                        <option value="hmo">HMO</option>
-                                                        <option value="ppo">PPO</option>
-                                                        <option value="other">Other</option>
-                                                    </select>
-                                                    <div class="field-description">Type of insurance plan</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-row">
-                                            <div class="form-col">
-                                                <div class="form-group">
-                                                    <label for="primaryNetworkStatus">Provider Network Status</label>
-                                                    <select id="primaryNetworkStatus" name="insuranceInfo.primaryInsurance.primaryNetworkStatus">
-                                                        <option value="">Select Network Status</option>
-                                                        <option value="in_network">In-Network</option>
-                                                        <option value="out_of_network">Out-of-Network</option>
-                                                        <option value="unknown">Not Sure (Please verify)</option>
-                                                    </select>
-                                                    <div class="field-description">Network participation status with this payer</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-subsection">
-                                        <div class="form-subsection-title">Secondary Insurance</div>
-                                        
-                                        <div class="form-row">
-                                            <div class="form-col">
-                                                <div class="form-group">
-                                                    <label for="secondaryInsuranceName">Insurance Name</label>
-                                                    <input type="text" id="secondaryInsuranceName" name="insuranceInfo.secondaryInsurance.secondaryInsuranceName">
-                                                    <div class="field-description">Name of secondary insurance carrier</div>
-                                                </div>
-                                            </div>
-                                            <div class="form-col">
-                                                <div class="form-group">
-                                                    <label for="secondaryPolicyNumber">Policy Number</label>
-                                                    <input type="text" id="secondaryPolicyNumber" name="insuranceInfo.secondaryInsurance.secondaryPolicyNumber">
-                                                    <div class="field-description">Secondary insurance policy/ID number</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-row">
-                                            <div class="form-col">
-                                                <div class="form-group">
-                                                    <label for="secondarySubscriberName">Subscriber Name</label>
-                                                    <input type="text" id="secondarySubscriberName" name="insuranceInfo.secondaryInsurance.secondarySubscriberName">
-                                                    <div class="field-description">Name of the secondary policyholder</div>
-                                                </div>
-                                            </div>
-                                            <div class="form-col">
-                                                <div class="form-group">
-                                                    <label for="secondarySubscriberDOB">Subscriber DOB</label>
-                                                    <input type="date" id="secondarySubscriberDOB" name="insuranceInfo.secondaryInsurance.secondarySubscriberDOB">
-                                                    <div class="field-description">Date of birth of the secondary policyholder</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-row">
-                                            <div class="form-col">
-                                                <div class="form-group">
-                                                    <label for="secondaryPayerPhone">Payer Phone</label>
-                                                    <input type="tel" id="secondaryPayerPhone" name="insuranceInfo.secondaryInsurance.secondaryPayerPhone">
-                                                    <div class="field-description">Phone number for the secondary insurance company</div>
-                                                </div>
-                                            </div>
-                                            <div class="form-col">
-                                                <div class="form-group">
-                                                    <label for="secondaryPlanType">Plan Type</label>
-                                                    <select id="secondaryPlanType" name="insuranceInfo.secondaryInsurance.secondaryPlanType">
-                                                        <option value="">Select Plan Type</option>
-                                                        <option value="hmo">HMO</option>
-                                                        <option value="ppo">PPO</option>
-                                                        <option value="other">Other</option>
-                                                    </select>
-                                                    <div class="field-description">Type of secondary insurance plan</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-row">
-                                            <div class="form-col">
-                                                <div class="form-group">
-                                                    <label for="secondaryNetworkStatus">Provider Network Status</label>
-                                                    <select id="secondaryNetworkStatus" name="insuranceInfo.secondaryInsurance.secondaryNetworkStatus">
-                                                        <option value="">Select Network Status</option>
-                                                        <option value="in_network">In-Network</option>
-                                                        <option value="out_of_network">Out-of-Network</option>
-                                                        <option value="unknown">Not Sure (Please verify)</option>
-                                                    </select>
-                                                    <div class="field-description">Network participation status with secondary payer</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group checkbox-group">
-                                                <input type="checkbox" id="authorizationPermission" name="insuranceInfo.authorizationPermission" required>
-                                                <label for="authorizationPermission">Permission to Initiate/Follow Up on Prior Authorization <span class="required-indicator">*</span></label>
-                                                <div class="field-description">Whether the company is authorized to handle prior authorization</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group checkbox-group">
-                                                <input type="checkbox" id="requestPriorAuthAssistance" name="insuranceInfo.requestPriorAuthAssistance">
-                                                <label for="requestPriorAuthAssistance">Request Prior Authorization Assistance</label>
-                                                <div class="field-description">Whether assistance is requested for prior authorization</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group checkbox-group">
-                                                <input type="checkbox" id="cardsAttached" name="insuranceInfo.cardsAttached">
-                                                <label for="cardsAttached">Insurance Cards Attached</label>
-                                                <div class="field-description">Whether front and back of insurance cards are attached</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-row">
-                                    <div class="form-col">
-                                        <button type="button" class="btn btn-secondary" id="backToStep1">Back</button>
-                                    </div>
-                                    <div class="form-col">
-                                        <button type="button" class="btn btn-primary" id="nextToStep3">Continue to Provider & Facility</button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Step 3: Provider & Facility -->
-                            <div class="form-step" data-step="3" style="display: none;">
-                                <div class="form-section">
-                                    <div class="form-section-title">Physician Information</div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="physicianName">Physician Name <span class="required-indicator">*</span></label>
-                                                <input type="text" id="physicianName" name="physicianInfo.physicianName" required>
-                                                <div class="field-description">Name of the treating physician</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="physicianSpecialty">Physician Specialty</label>
-                                                <input type="text" id="physicianSpecialty" name="physicianInfo.physicianSpecialty">
-                                                <div class="field-description">Medical specialty of the physician</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="physicianNPI">NPI <span class="required-indicator">*</span></label>
-                                                <input type="text" id="physicianNPI" name="physicianInfo.physicianNPI" required>
-                                                <div class="field-description">National Provider Identifier</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="physicianTaxID">Tax ID <span class="required-indicator">*</span></label>
-                                                <input type="text" id="physicianTaxID" name="physicianInfo.physicianTaxID" required>
-                                                <div class="field-description">Physician's tax identification number</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="physicianPTAN">PTAN</label>
-                                                <input type="text" id="physicianPTAN" name="physicianInfo.physicianPTAN">
-                                                <div class="field-description">Provider Transaction Access Number</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="physicianMedicaidNumber">Medicaid #</label>
-                                                <input type="text" id="physicianMedicaidNumber" name="physicianInfo.physicianMedicaidNumber">
-                                                <div class="field-description">Physician's Medicaid provider number</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="physicianPhone">Phone #</label>
-                                                <input type="tel" id="physicianPhone" name="physicianInfo.physicianPhone">
-                                                <div class="field-description">Physician's office phone number</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="physicianFax">Fax #</label>
-                                                <input type="tel" id="physicianFax" name="physicianInfo.physicianFax">
-                                                <div class="field-description">Physician's office fax number</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-section">
-                                    <div class="form-section-title">Facility Information</div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="facilityName">Facility Name <span class="required-indicator">*</span></label>
-                                                <input type="text" id="facilityName" name="facilityInfo.facilityName" required>
-                                                <div class="field-description">Name of the healthcare facility</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col-full">
-                                            <div class="form-group">
-                                                <label for="facilityAddressLine1">Address Line 1 <span class="required-indicator">*</span></label>
-                                                <input type="text" id="facilityAddressLine1" name="facilityInfo.facilityAddressLine1" required>
-                                                <div class="field-description">Facility's street address</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col-full">
-                                            <div class="form-group">
-                                                <label for="facilityAddressLine2">Address Line 2</label>
-                                                <input type="text" id="facilityAddressLine2" name="facilityInfo.facilityAddressLine2">
-                                                <div class="field-description">Additional facility address information</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="facilityCity">City <span class="required-indicator">*</span></label>
-                                                <input type="text" id="facilityCity" name="facilityInfo.facilityCity" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="facilityState">State <span class="required-indicator">*</span></label>
-                                                <input type="text" id="facilityState" name="facilityInfo.facilityState" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="facilityZipCode">ZIP Code <span class="required-indicator">*</span></label>
-                                                <input type="text" id="facilityZipCode" name="facilityInfo.facilityZipCode" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="facilityNPI">NPI <span class="required-indicator">*</span></label>
-                                                <input type="text" id="facilityNPI" name="facilityInfo.facilityNPI" required>
-                                                <div class="field-description">Facility's National Provider Identifier</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="facilityTaxID">Tax ID <span class="required-indicator">*</span></label>
-                                                <input type="text" id="facilityTaxID" name="facilityInfo.facilityTaxID" required>
-                                                <div class="field-description">Facility's tax identification number</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="facilityPTAN">PTAN</label>
-                                                <input type="text" id="facilityPTAN" name="facilityInfo.facilityPTAN">
-                                                <div class="field-description">Facility's Provider Transaction Access Number</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="facilityMedicareAdminContractor">Medicare Administrative Contractor</label>
-                                                <input type="text" id="facilityMedicareAdminContractor" name="facilityInfo.facilityMedicareAdminContractor">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="facilityContactName">Contact Name</label>
-                                                <input type="text" id="facilityContactName" name="facilityInfo.facilityContactName">
-                                                <div class="field-description">Name of primary contact at facility</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="facilityContactPhone">Contact Phone</label>
-                                                <input type="tel" id="facilityContactPhone" name="facilityInfo.facilityContactPhone">
-                                                <div class="field-description">Phone number for facility contact</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="facilityContactFax">Contact Fax</label>
-                                                <input type="tel" id="facilityContactFax" name="facilityInfo.facilityContactFax">
-                                                <div class="field-description">Fax number for facility contact</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="facilityContactEmail">Contact Email</label>
-                                                <input type="email" id="facilityContactEmail" name="facilityInfo.facilityContactEmail">
-                                                <div class="field-description">Email for facility contact</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="managementCompany">Management Company</label>
-                                                <input type="text" id="managementCompany" name="facilityInfo.managementCompany">
-                                                <div class="field-description">Facility management company name</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-section">
-                                    <div class="form-section-title">Place of Service</div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="placeOfService">Place of Service <span class="required-indicator">*</span></label>
-                                                <select id="placeOfService" name="placeOfService.placeOfService" required>
-                                                    <option value="">Select Place of Service</option>
-                                                    <option value="11">Physician Office (POS 11)</option>
-                                                    <option value="22">Hospital Outpatient (POS 22)</option>
-                                                    <option value="24">Ambulatory Surgical Center (POS 24)</option>
-                                                    <option value="12">Home (POS 12)</option>
-                                                    <option value="13">Assisted Living Facility (POS 13)</option>
-                                                    <option value="31">Skilled Nursing Facility (POS 31)</option>
-                                                    <option value="32">Nursing Facility (POS 32)</option>
-                                                    <option value="other">Other</option>
-                                                </select>
-                                                <div class="field-description">Setting where the patient is being treated</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group conditional-field" id="otherPlaceOfServiceGroup">
-                                                <label for="otherPlaceOfService">Other Place of Service</label>
-                                                <input type="text" id="otherPlaceOfService" name="placeOfService.otherPlaceOfService">
-                                                <div class="field-description">Specify other place of service</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group checkbox-group">
-                                                <input type="checkbox" id="snfStatus" name="placeOfService.snfStatus" required>
-                                                <label for="snfStatus">Is the patient currently in a Skilled Nursing Facility? <span class="required-indicator">*</span></label>
-                                                <div class="field-description">Whether the patient is in a skilled nursing facility</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row conditional-field" id="snfDetailsGroup">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="snfDays">Days in SNF</label>
-                                                <input type="number" id="snfDays" name="placeOfService.snfDays" min="0">
-                                                <div class="field-description">Number of days patient has been in the skilled nursing facility</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group checkbox-group">
-                                                <input type="checkbox" id="snfOver100Days" name="placeOfService.snfOver100Days">
-                                                <label for="snfOver100Days">Has the patient been in SNF for over 100 days?</label>
-                                                <div class="field-description">Whether the patient has been in SNF for more than 100 days</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group checkbox-group">
-                                                <input type="checkbox" id="hospiceStatus" name="placeOfService.hospiceStatus">
-                                                <label for="hospiceStatus">Is the patient currently in Hospice?</label>
-                                                <div class="field-description">Whether the patient is currently in hospice care</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group checkbox-group">
-                                                <input type="checkbox" id="partAStatus" name="placeOfService.partAStatus">
-                                                <label for="partAStatus">Is the patient in a facility under Part A stay?</label>
-                                                <div class="field-description">Whether the patient is covered under Medicare Part A</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-row">
-                                    <div class="form-col">
-                                        <button type="button" class="btn btn-secondary" id="backToStep2">Back</button>
-                                    </div>
-                                    <div class="form-col">
-                                        <button type="button" class="btn btn-primary" id="nextToStep4">Continue to Wound & Product</button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Step 4: Wound & Product -->
-                            <div class="form-step" data-step="4" style="display: none;">
-                                <div class="form-section">
-                                    <div class="form-section-title">Wound Information</div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col-full">
-                                            <div class="form-group">
-                                                <label for="woundType">Wound Type <span class="required-indicator">*</span></label>
-                                                <div class="multiselect" id="woundTypeMultiselect">
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="woundType_diabetic_foot_ulcer" name="woundInfo.woundType" value="diabetic_foot_ulcer">
-                                                        <label for="woundType_diabetic_foot_ulcer">Diabetic Foot Ulcer</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="woundType_venous_leg_ulcer" name="woundInfo.woundType" value="venous_leg_ulcer">
-                                                        <label for="woundType_venous_leg_ulcer">Venous Leg Ulcer</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="woundType_pressure_ulcer" name="woundInfo.woundType" value="pressure_ulcer">
-                                                        <label for="woundType_pressure_ulcer">Pressure Ulcer</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="woundType_traumatic" name="woundInfo.woundType" value="traumatic">
-                                                        <label for="woundType_traumatic">Traumatic Burns</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="woundType_radiation" name="woundInfo.woundType" value="radiation">
-                                                        <label for="woundType_radiation">Radiation Burns</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="woundType_necrotizing_fasciitis" name="woundInfo.woundType" value="necrotizing_fasciitis">
-                                                        <label for="woundType_necrotizing_fasciitis">Necrotizing Fasciitis</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="woundType_dehisced_surgical" name="woundInfo.woundType" value="dehisced_surgical">
-                                                        <label for="woundType_dehisced_surgical">Dehisced Surgical Wound</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="woundType_mohs_surgical" name="woundInfo.woundType" value="mohs_surgical">
-                                                        <label for="woundType_mohs_surgical">Mohs Surgical Wound</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="woundType_chronic_ulcer" name="woundInfo.woundType" value="chronic_ulcer">
-                                                        <label for="woundType_chronic_ulcer">Chronic Ulcer</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="woundType_other" name="woundInfo.woundType" value="other">
-                                                        <label for="woundType_other">Other</label>
-                                                    </div>
-                                                </div>
-                                                <div class="field-description">Type of wound being treated</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row conditional-field" id="woundOtherSpecifyGroup">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="woundOtherSpecify">Other Wound Type</label>
-                                                <input type="text" id="woundOtherSpecify" name="woundInfo.woundOtherSpecify">
-                                                <div class="field-description">Specify other wound type</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="woundLocation">Wound Location <span class="required-indicator">*</span></label>
-                                                <select id="woundLocation" name="woundInfo.woundLocation" required>
-                                                    <option value="">Select Wound Location</option>
-                                                    <option value="trunk_arms_legs_small">Legs/Arms/Trunk ≤ 100 sq cm</option>
-                                                    <option value="trunk_arms_legs_large">Legs/Arms/Trunk > 100 sq cm</option>
-                                                    <option value="hands_feet_head_small">Feet/Hands/Head ≤ 100 sq cm</option>
-                                                    <option value="hands_feet_head_large">Feet/Hands/Head > 100 sq cm</option>
-                                                </select>
-                                                <div class="field-description">Location of the wound on the body</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="woundLocationDetails">Specific Wound Location</label>
-                                                <input type="text" id="woundLocationDetails" name="woundInfo.woundLocationDetails">
-                                                <div class="field-description">More specific details about wound location</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="woundSizeLength">Wound Size - Length (cm)</label>
-                                                <input type="number" id="woundSizeLength" name="woundInfo.woundSizeLength" step="0.1" min="0">
-                                                <div class="field-description">Length measurement of the wound</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="woundSizeWidth">Wound Size - Width (cm)</label>
-                                                <input type="number" id="woundSizeWidth" name="woundInfo.woundSizeWidth" step="0.1" min="0">
-                                                <div class="field-description">Width measurement of the wound</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="woundSizeDepth">Wound Size - Depth (cm)</label>
-                                                <input type="number" id="woundSizeDepth" name="woundInfo.woundSizeDepth" step="0.1" min="0">
-                                                <div class="field-description">Depth measurement of the wound</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="woundSizeTotal">Total Wound Size (sq cm) <span class="required-indicator">*</span></label>
-                                                <input type="number" id="woundSizeTotal" name="woundInfo.woundSizeTotal" step="0.1" min="0" required>
-                                                <div class="field-description">Total area of the wound (will be calculated if length and width are provided)</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="woundDuration">Wound Duration</label>
-                                                <input type="text" id="woundDuration" name="woundInfo.woundDuration">
-                                                <div class="field-description">How long the wound has been present</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col-full">
-                                            <div class="form-group">
-                                                <label for="previousTreatments">Previously Used Therapies</label>
-                                                <textarea id="previousTreatments" name="woundInfo.previousTreatments" rows="3"></textarea>
-                                                <div class="field-description">Treatments that have been used previously</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-section">
-                                    <div class="form-section-title">Procedure Information</div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group checkbox-group">
-                                                <input type="checkbox" id="globalPeriodStatus" name="procedureInfo.globalPeriodStatus" required>
-                                                <label for="globalPeriodStatus">Is the patient currently under a post-op global surgical period? <span class="required-indicator">*</span></label>
-                                                <div class="field-description">Whether the patient is in a post-operative global period</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row conditional-field" id="globalPeriodDetailsGroup">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="globalPeriodCptCodes">CPT Code(s) of Previous Surgery</label>
-                                                <input type="text" id="globalPeriodCptCodes" name="procedureInfo.globalPeriodCptCodes">
-                                                <div class="field-description">CPT codes of surgeries within global period</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="globalPeriodSurgeryDate">Surgery Date</label>
-                                                <input type="date" id="globalPeriodSurgeryDate" name="procedureInfo.globalPeriodSurgeryDate">
-                                                <div class="field-description">Date of previous surgery</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="anticipatedTreatmentDate">Anticipated Treatment Date</label>
-                                                <input type="date" id="anticipatedTreatmentDate" name="procedureInfo.anticipatedTreatmentDate">
-                                                <div class="field-description">When the treatment is expected to start</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="anticipatedApplications">Number of Anticipated Applications</label>
-                                                <input type="number" id="anticipatedApplications" name="procedureInfo.anticipatedApplications" min="1">
-                                                <div class="field-description">Expected number of product applications</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col-full">
-                                            <div class="form-group">
-                                                <label for="applicationCptCodes">Application CPT Codes <span class="required-indicator">*</span></label>
-                                                <div class="multiselect" id="applicationCptCodesMultiselect">
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="cpt_15271" name="procedureInfo.applicationCptCodes" value="15271">
-                                                        <label for="cpt_15271">15271 - First 25 sq cm trunk/arms/legs</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="cpt_15272" name="procedureInfo.applicationCptCodes" value="15272">
-                                                        <label for="cpt_15272">15272 - Each additional 25 sq cm trunk/arms/legs</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="cpt_15273" name="procedureInfo.applicationCptCodes" value="15273">
-                                                        <label for="cpt_15273">15273 - First 100 sq cm trunk/arms/legs</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="cpt_15274" name="procedureInfo.applicationCptCodes" value="15274">
-                                                        <label for="cpt_15274">15274 - Each additional 100 sq cm trunk/arms/legs</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="cpt_15275" name="procedureInfo.applicationCptCodes" value="15275">
-                                                        <label for="cpt_15275">15275 - First 25 sq cm feet/hands/head</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="cpt_15276" name="procedureInfo.applicationCptCodes" value="15276">
-                                                        <label for="cpt_15276">15276 - Each additional 25 sq cm feet/hands/head</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="cpt_15277" name="procedureInfo.applicationCptCodes" value="15277">
-                                                        <label for="cpt_15277">15277 - First 100 sq cm feet/hands/head</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="cpt_15278" name="procedureInfo.applicationCptCodes" value="15278">
-                                                        <label for="cpt_15278">15278 - Each additional 100 sq cm feet/hands/head</label>
-                                                    </div>
-                                                </div>
-                                                <div class="field-description">CPT codes for the product application</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col-full">
-                                            <div class="form-group">
-                                                <label for="diagnosisCodes">ICD-10 Diagnosis Codes <span class="required-indicator">*</span></label>
-                                                <textarea id="diagnosisCodes" name="procedureInfo.diagnosisCodes" rows="3" required></textarea>
-                                                <div class="field-description">ICD-10 codes for the diagnosed conditions</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="primaryDiagnosisCode">Primary Diagnosis Code</label>
-                                                <input type="text" id="primaryDiagnosisCode" name="procedureInfo.primaryDiagnosisCode">
-                                                <div class="field-description">Primary ICD-10 code</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="secondaryDiagnosisCodes">Secondary Diagnosis Codes</label>
-                                                <input type="text" id="secondaryDiagnosisCodes" name="procedureInfo.secondaryDiagnosisCodes">
-                                                <div class="field-description">Additional ICD-10 codes</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col-full">
-                                            <div class="form-group">
-                                                <label for="comorbidities">Co-Morbidities</label>
-                                                <textarea id="comorbidities" name="procedureInfo.comorbidities" rows="3"></textarea>
-                                                <div class="field-description">Patient's comorbid conditions</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-section">
-                                    <div class="form-section-title">Product Information</div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col-full">
-                                            <div class="form-group">
-                                                <label for="selectedProducts">Selected Products <span class="required-indicator">*</span></label>
-                                                <div class="multiselect" id="selectedProductsMultiselect">
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="product_Q4205" name="productInfo.selectedProducts" value="Q4205">
-                                                        <label for="product_Q4205">Membrane Wrap (Q4205)</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="product_Q4238" name="productInfo.selectedProducts" value="Q4238">
-                                                        <label for="product_Q4238">Derm-maxx (Q4238)</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="product_Q4239" name="productInfo.selectedProducts" value="Q4239">
-                                                        <label for="product_Q4239">Amnio-maxx (Q4239)</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="product_Q4289" name="productInfo.selectedProducts" value="Q4289">
-                                                        <label for="product_Q4289">Revoshield (Q4289)</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="product_Q4290" name="productInfo.selectedProducts" value="Q4290">
-                                                        <label for="product_Q4290">Membrane Wrap Hydro (Q4290)</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="product_Q4161" name="productInfo.selectedProducts" value="Q4161">
-                                                        <label for="product_Q4161">Bio-Connekt (Q4161)</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="product_A2005" name="productInfo.selectedProducts" value="A2005">
-                                                        <label for="product_A2005">Microlyte Matrix (A2005)</label>
-                                                    </div>
-                                                </div>
-                                                <div class="field-description">Product(s) to be used</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col-full">
-                                            <div class="form-group">
-                                                <label for="productSizes">Product Sizes</label>
-                                                <div class="multiselect" id="productSizesMultiselect">
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="size_1.6mm_disc" name="productInfo.productSizes" value="1.6mm_disc">
-                                                        <label for="size_1.6mm_disc">1.6 Millimeter Disc</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="size_2x2" name="productInfo.productSizes" value="2x2">
-                                                        <label for="size_2x2">2x2 Square Centimeter Sheet</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="size_4x4" name="productInfo.productSizes" value="4x4">
-                                                        <label for="size_4x4">4x4 Square Centimeter Sheet</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="size_5x5" name="productInfo.productSizes" value="5x5">
-                                                        <label for="size_5x5">5x5 Square Centimeter Sheet</label>
-                                                    </div>
-                                                    <div class="checkbox-group">
-                                                        <input type="checkbox" id="size_10x10" name="productInfo.productSizes" value="10x10">
-                                                        <label for="size_10x10">10x10 Square Centimeter Sheet</label>
-                                                    </div>
-                                                </div>
-                                                <div class="field-description">Sizes of the product(s) needed</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="graftSizeRequested">Size of Graft Requested</label>
-                                                <input type="text" id="graftSizeRequested" name="productInfo.graftSizeRequested">
-                                                <div class="field-description">Size of the graft needed</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-section">
-                                    <div class="form-section-title">Additional Information</div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group checkbox-group">
-                                                <input type="checkbox" id="clinicalStudyParticipation" name="additionalInfo.clinicalStudyParticipation">
-                                                <label for="clinicalStudyParticipation">Is the patient part of a Clinical Study?</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row conditional-field" id="clinicalStudyNameGroup">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="clinicalStudyName">Study/Trial/Case Series Name</label>
-                                                <input type="text" id="clinicalStudyName" name="additionalInfo.clinicalStudyName">
-                                                <div class="field-description">Name of the clinical study</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col-full">
-                                            <div class="form-group">
-                                                <label for="generalNotes">Additional Notes</label>
-                                                <textarea id="generalNotes" name="additionalInfo.generalNotes" rows="3"></textarea>
-                                                <div class="field-description">Any additional relevant information</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-row">
-                                    <div class="form-col">
-                                        <button type="button" class="btn btn-secondary" id="backToStep3">Back</button>
-                                    </div>
-                                    <div class="form-col">
-                                        <button type="button" class="btn btn-primary" id="nextToStep5">Continue to Review & Submit</button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Step 5: Review & Submit -->
-                            <div class="form-step" data-step="5" style="display: none;">
-                                <div class="form-section">
-                                    <div class="form-section-title">Required Documents</div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group checkbox-group">
-                                                <input type="checkbox" id="demographicSheet" name="requiredDocuments.demographicSheet">
-                                                <label for="demographicSheet">Patient Demographic Sheet</label>
-                                                <div class="field-description">Whether patient demographic sheet is attached</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-col">
-                                            <div class="form-group checkbox-group">
-                                                <input type="checkbox" id="insuranceCards" name="requiredDocuments.insuranceCards">
-                                                <label for="insuranceCards">Front and Back of Insurance Cards</label>
-                                                <div class="field-description">Whether copies of insurance cards are attached</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group checkbox-group">
-                                                <input type="checkbox" id="clinicalNotes" name="requiredDocuments.clinicalNotes">
-                                                <label for="clinicalNotes">Clinical Notes</label>
-                                                <div class="field-description">Whether clinical notes are attached</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-section">
-                                    <div class="form-section-title">Authorization</div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col-full">
-                                            <div class="form-group">
-                                                <label for="signature">Authorized Signature <span class="required-indicator">*</span></label>
-                                                <div class="signature-pad-container">
-                                                    <canvas id="signaturePad" class="signature-pad" width="600" height="150"></canvas>
-                                                </div>
-                                                <div class="signature-actions">
-                                                    <button type="button" class="btn btn-secondary" id="clearSignature">Clear</button>
-                                                </div>
-                                                <input type="hidden" id="signature" name="authorization.signature" required>
-                                                <div class="field-description">Electronic signature of authorized healthcare professional</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-row">
-                                        <div class="form-col">
-                                            <div class="form-group">
-                                                <label for="signatureDate">Date <span class="required-indicator">*</span></label>
-                                                <input type="date" id="signatureDate" name="authorization.signatureDate" required>
-                                                <div class="field-description">Date of signature</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-row">
-                                    <div class="form-col">
-                                        <button type="button" class="btn btn-secondary" id="backToStep4">Back</button>
-                                    </div>
-                                    <div class="form-col">
-                                        <button type="submit" class="btn btn-primary btn-submit" id="submitForm">
-                                            <span class="btn-text">Submit IVR Form</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        <div class="flex justify-between mt-2 text-sm text-gray-600">
+                            <span>Step <span id="currentStep">1</span> of 5</span>
+                            <span><span id="completionPercentage">20</span>% Complete</span>
+                        </div>
                     </div>
-                    
-                    <!-- Education Request Tab Content -->
-                    <div class="tab-content" id="education-request">
-                        <form id="educationForm">
-                            <input type="hidden" name="action" value="product_info">
-                            
-                            <div class="form-section">
-                                <div class="form-group">
-                                    <label for="topic">Topic (Optional)</label>
-                                    <select id="topic" name="topic">
-                                        <option value="">Select a Topic</option>
-                                        <option value="microlyte">Microlyte Products</option>
-                                        <option value="membrane_wrap">Membrane Wrap</option>
-                                        <option value="amnio_matrix">Amnio Matrix</option>
-                                        <option value="wound_assessment">Wound Assessment</option>
-                                        <option value="treatment_protocols">Treatment Protocols</option>
-                                        <option value="reimbursement">Reimbursement Information</option>
-                                        <option value="patient_selection">Patient Selection Criteria</option>
-                                        <option value="application_techniques">Application Techniques</option>
-                                    </select>
-                                </div>
+
+                    <form id="ivrForm" action="/api/submit-ivr" method="POST" enctype="multipart/form-data">
+                        <!-- Step 1: Form Setup -->
+                        <div id="step1" class="form-step active">
+                            <div class="form-section mb-6">
+                                <h3 class="text-xl font-semibold mb-2">Form Setup</h3>
                                 
-                                <div class="form-group">
-                                    <label for="question">Your Question</label>
-                                    <textarea id="question" name="question" rows="4" placeholder="Enter your question about wound care products or treatments" required></textarea>
+                                <div class="form-section-content border p-4 rounded-md bg-white shadow-sm">
+                                    <div class="form-group mb-4">
+                                        <label for="manufacturer" class="block text-sm font-medium text-gray-700 mb-1">
+                                            Manufacturer <span class="text-red-500">*</span>
+                                        </label>
+                                        <select id="manufacturer" name="manufacturerId" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                            <option value="">Select Manufacturer</option>
+                                            <!-- Manufacturer options would be populated from database -->
+                                        </select>
+                                        <div class="mt-1 text-xs text-gray-500">Select the manufacturer for the product being requested</div>
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <label for="request_type" class="block text-sm font-medium text-gray-700 mb-1">
+                                            Request Type <span class="text-red-500">*</span>
+                                        </label>
+                                        <select id="request_type" name="requestType" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                            <option value="">Select Request Type</option>
+                                            <option value="new_request">New Request</option>
+                                            <option value="reverification">Re-verification</option>
+                                            <option value="additional_applications">Additional Applications</option>
+                                            <option value="new_insurance">New Insurance</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <label for="request_date" class="block text-sm font-medium text-gray-700 mb-1">
+                                            Request Date <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="date" id="request_date" name="requestDate" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <label for="sales_rep" class="block text-sm font-medium text-gray-700 mb-1">
+                                            Sales Representative <span class="text-red-500">*</span>
+                                        </label>
+                                        <select id="sales_rep" name="repId" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                            <option value="">Select Sales Representative</option>
+                                            <!-- Rep options would be populated from database -->
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <label for="additional_emails" class="block text-sm font-medium text-gray-700 mb-1">
+                                            Additional Notification Emails
+                                        </label>
+                                        <input type="text" id="additional_emails" name="additionalEmails" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                        <div class="mt-1 text-xs text-gray-500">Separate multiple emails with commas</div>
+                                    </div>
                                 </div>
                             </div>
                             
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block btn-submit" id="educationSubmitBtn">
-                                    <span class="btn-text">Get Information</span>
+                            <div class="form-navigation flex justify-end mt-8">
+                                <button type="button" id="nextToStep2" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+                                    Continue to Patient Information
                                 </button>
                             </div>
-                        </form>
-                    </div>
-                    
-                    <!-- Response Container -->
-                    <div id="responseContainer">
-                        <h3 id="responseTitle"></h3>
-                        <div id="responseContent"></div>
-                    </div>
+                        </div>
+                        
+                        <!-- Step 5: Required Documents -->
+                        <div id="step5" class="form-step" style="display: none;">
+                            <div class="form-section mb-6">
+                                <h3 class="text-xl font-semibold mb-2">Required Documents</h3>
+                                <p class="text-gray-600 mb-4">Please upload the following documents if available</p>
+                                
+                                <div class="form-section-content border p-4 rounded-md bg-white shadow-sm">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div class="form-group">
+                                            <label for="patientDemographicSheet" class="block text-sm font-medium text-gray-700 mb-1">
+                                                Patient Demographic Sheet
+                                            </label>
+                                            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                                                <div class="space-y-1 text-center">
+                                                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    </svg>
+                                                    <div class="flex text-sm text-gray-600">
+                                                        <label for="demographic-file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                                                            <span>Upload a file</span>
+                                                            <input id="demographic-file-upload" name="patientDemographicSheet" type="file" class="sr-only">
+                                                        </label>
+                                                        <p class="pl-1">or drag and drop</p>
+                                                    </div>
+                                                    <p class="text-xs text-gray-500">
+                                                        PDF, PNG, JPG up to 10MB
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <p class="mt-1 text-xs text-gray-500">Whether patient demographic sheet is attached</p>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="insuranceCards" class="block text-sm font-medium text-gray-700 mb-1">
+                                                Front and Back of Insurance Cards
+                                            </label>
+                                            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                                                <div class="space-y-1 text-center">
+                                                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    </svg>
+                                                    <div class="flex text-sm text-gray-600">
+                                                        <label for="insurance-file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                                                            <span>Upload a file</span>
+                                                            <input id="insurance-file-upload" name="insuranceCards" type="file" class="sr-only" multiple>
+                                                        </label>
+                                                        <p class="pl-1">or drag and drop</p>
+                                                    </div>
+                                                    <p class="text-xs text-gray-500">
+                                                        PDF, PNG, JPG up to 10MB
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <p class="mt-1 text-xs text-gray-500">Whether copies of insurance cards are attached</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mt-6">
+                                        <label for="clinicalNotes" class="block text-sm font-medium text-gray-700 mb-1">
+                                            Clinical Notes
+                                        </label>
+                                        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                                            <div class="space-y-1 text-center">
+                                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                                <div class="flex text-sm text-gray-600">
+                                                    <label for="clinical-notes-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                                                        <span>Upload a file</span>
+                                                        <input id="clinical-notes-upload" name="clinicalNotes" type="file" class="sr-only">
+                                                    </label>
+                                                    <p class="pl-1">or drag and drop</p>
+                                                </div>
+                                                <p class="text-xs text-gray-500">
+                                                    PDF, PNG, JPG up to 10MB
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <p class="mt-1 text-xs text-gray-500">Whether clinical notes are attached</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section mb-6">
+                                <h3 class="text-xl font-semibold mb-2">Authorization</h3>
+                                <div class="form-section-content border p-4 rounded-md bg-white shadow-sm">
+                                    <div class="form-group mb-4">
+                                        <label for="signature" class="block text-sm font-medium text-gray-700 mb-1">
+                                            Authorized Signature <span class="text-red-500">*</span>
+                                        </label>
+                                        <div class="signature-pad-container border border-gray-300 rounded-md overflow-hidden">
+                                            <canvas id="signaturePad" class="signature-pad w-full h-36 bg-white"></canvas>
+                                        </div>
+                                        <div class="flex justify-end mt-2">
+                                            <button type="button" class="text-sm text-blue-600 hover:text-blue-800" id="clearSignature">
+                                                Clear Signature
+                                            </button>
+                                        </div>
+                                        <input type="hidden" id="signature" name="signature" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="signatureDate" class="block text-sm font-medium text-gray-700 mb-1">
+                                            Date <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="date" id="signatureDate" name="signatureDate" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Form Navigation -->
+                            <div class="form-navigation flex justify-between mt-8">
+                                <button type="button" id="backToStep4" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                                    Back
+                                </button>
+                                <button type="submit" id="submitForm" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+                                    Submit Request
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Other forms would go here -->
+        </div>
+    </main>
+
+    <footer class="bg-gray-100 py-4 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-sm text-gray-600">
+                    &copy; 2025 MSC Wound Care. All rights reserved.
+                </div>
+                <div class="mt-2 md:mt-0">
+                    <ul class="flex space-x-4 text-sm">
+                        <li><a href="#" class="text-blue-600 hover:underline">Privacy Policy</a></li>
+                        <li><a href="#" class="text-blue-600 hover:underline">Terms of Service</a></li>
+                        <li><a href="#" class="text-blue-600 hover:underline">Contact Us</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </main>
-</body>
-      <script>
+    </footer>
 
-        // First, our debug script
-        (function() {
-            console.log('Debug script loaded');
-            
-            // Log when the page is fully loaded
-            window.addEventListener('load', function() {
-                console.log('Page fully loaded');
-                
-                // Log all buttons
-                const buttons = document.querySelectorAll('button');
-                console.log('Buttons found:', buttons.length);
-                buttons.forEach((btn, index) => {
-                    console.log(`Button ${index}:`, {
-                        id: btn.id,
-                        text: btn.textContent,
-                        type: btn.type
-                    });
-                });
-                
-                // Attach emergency click handlers
-                buttons.forEach(btn => {
-                    btn.addEventListener('click', function(e) {
-                        console.log('Button clicked:', {
-                            id: this.id,
-                            text: this.textContent
-                        });
-                    });
-                });
-            });
-
-            // Attach global error handler
-            window.addEventListener('error', function(event) {
-                console.error('Unhandled error:', event.error);
-            });
-        })();
-
-        // Then, our navigation script
-        // DOM Elements
-        const tabs = document.querySelectorAll('.tab');
-        const tabContents = document.querySelectorAll('.tab-content');
-        const formSteps = document.querySelectorAll('.form-step');
-        const progressSteps = document.querySelectorAll('.progress-step');
-        const progressBarFill = document.querySelector('.progress-bar-fill');
-        const currentStepElement = document.getElementById('currentStep');
-        const completionPercentageElement = document.getElementById('completionPercentage');
-        
-        // Navigation buttons
-        const navigationButtons = [
-            { id: 'nextToStep2', targetStep: 2 },
-            { id: 'nextToStep3', targetStep: 3 },
-            { id: 'nextToStep4', targetStep: 4 },
-            { id: 'nextToStep5', targetStep: 5 },
-            { id: 'backToStep1', targetStep: 1 },
-            { id: 'backToStep2', targetStep: 2 },
-            { id: 'backToStep3', targetStep: 3 },
-            { id: 'backToStep4', targetStep: 4 }
-        ];
-
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Form navigation script loaded');
-
-            // Add click event listeners to navigation buttons
-            navigationButtons.forEach(button => {
-                const buttonElement = document.getElementById(button.id);
-                if (buttonElement) {
-                    buttonElement.addEventListener('click', function() {
-                        console.log(`Navigating to step ${button.targetStep}`);
-                        goToStep(button.targetStep);
-                    });
-                } else {
-                    console.warn(`Navigation button ${button.id} not found`);
-                }
-            });
-
-            // Tab Switching
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // Remove active class from all tabs and contents
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(c => c.classList.remove('active'));
-                    
-                    // Add active class to clicked tab
-                    tab.classList.add('active');
-                    
-                    // Show corresponding content
-                    const tabId = tab.getAttribute('data-tab');
-                    document.getElementById(tabId).classList.add('active');
-                });
-            });
-
-            // Additional form initialization
-            initializeFormFields();
-        });
-
-        // Form step navigation function
-        function goToStep(stepNumber) {
-            console.log(`Attempting to go to step ${stepNumber}`);
-
-            // Hide all steps
-            formSteps.forEach(step => {
-                step.style.display = 'none';
-            });
-            
-            // Show the requested step
-            const currentStep = document.querySelector(`.form-step[data-step="${stepNumber}"]`);
-            if (currentStep) {
-                currentStep.style.display = 'block';
-            } else {
-                console.error(`Step ${stepNumber} not found`);
-                return;
-            }
-            
-            // Update progress
-            updateProgress(stepNumber);
-            
-            // Scroll to top of the page
-            window.scrollTo(0, 0);
-        }
-
-        // Progress update function
-        function updateProgress(stepNumber) {
-            console.log(`Updating progress for step ${stepNumber}`);
-            
-            // Update progress bar
-            const progressPercentage = ((stepNumber - 1) / 4) * 100;
-            if (progressBarFill) {
-                progressBarFill.style.width = `${progressPercentage}%`;
-            }
-            
-            // Update step text
-            if (currentStepElement) currentStepElement.textContent = stepNumber;
-            if (completionPercentageElement) completionPercentageElement.textContent = Math.round(progressPercentage);
-            
-            // Update step indicators
-            const progressSteps = document.querySelectorAll('.progress-step');
-            progressSteps.forEach(step => {
-                const stepNum = parseInt(step.getAttribute('data-step'));
-                step.classList.remove('active', 'completed');
-                
-                if (stepNum === stepNumber) {
-                    step.classList.add('active');
-                } else if (stepNum < stepNumber) {
-                    step.classList.add('completed');
-                }
-            });
-        }
-
-        // Initialize form fields
-        function initializeFormFields() {
+            // Set default date to today
             const today = new Date().toISOString().split('T')[0];
+            document.getElementById('request_date').value = today;
+            document.getElementById('signatureDate').value = today;
             
-            // Set default date for request date
-            const requestDateField = document.getElementById('requestDate');
-            if (requestDateField) {
-                requestDateField.value = today;
-            }
-
-            // Set default date for signature
-            const signatureDateField = document.getElementById('signatureDate');
-            if (signatureDateField) {
-                signatureDateField.value = today;
-            }
-
-            // Initialize signature pad
-            const canvas = document.getElementById('signaturePad');
-            if (canvas && window.SignaturePad) {
-                const signaturePad = new SignaturePad(canvas, {
-                    backgroundColor: 'rgb(255, 255, 255)',
-                    penColor: 'rgb(0, 0, 0)'
-                });
-                
-                // Clear signature button
-                const clearSignatureBtn = document.getElementById('clearSignature');
-                if (clearSignatureBtn) {
-                    clearSignatureBtn.addEventListener('click', function() {
-                        signaturePad.clear();
-                        document.getElementById('signature').value = '';
+            // Tab navigation
+            const tabs = [
+                { id: 'ivr-tab', formId: 'ivr-form' },
+                { id: 'product-education-tab', formId: 'product-education-form' },
+                { id: 'order-tab', formId: 'order-form' },
+                { id: 'onboarding-tab', formId: 'onboarding-form' }
+            ];
+            
+            tabs.forEach(tab => {
+                const tabElement = document.getElementById(tab.id);
+                if (tabElement) {
+                    tabElement.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        // Hide all forms
+                        tabs.forEach(t => {
+                            const formElement = document.getElementById(t.formId);
+                            const tabElement = document.getElementById(t.id);
+                            if (formElement && tabElement) {
+                                formElement.classList.add('hidden');
+                                tabElement.classList.remove('text-blue-800', 'border-b-2', 'border-blue-800');
+                                tabElement.classList.add('text-gray-600');
+                            }
+                        });
+                        
+                        // Show the selected form
+                        const formElement = document.getElementById(tab.formId);
+                        if (formElement) {
+                            formElement.classList.remove('hidden');
+                            this.classList.add('text-blue-800', 'border-b-2', 'border-blue-800');
+                        }
                     });
                 }
+            });
+            
+            // Multi-step form navigation
+            function goToStep(stepNumber) {
+                // Hide all steps
+                document.querySelectorAll('.form-step').forEach(step => {
+                    step.style.display = 'none';
+                });
+                
+                // Show the target step
+                const targetStep = document.getElementById(`step${stepNumber}`);
+                if (targetStep) {
+                    targetStep.style.display = 'block';
+                }
+                
+                // Update progress bar
+                const progressPercentage = ((stepNumber - 1) / 4) * 100;
+                document.querySelector('.progress-bar-fill').style.width = `${progressPercentage}%`;
+                document.getElementById('currentStep').textContent = stepNumber;
+                document.getElementById('completionPercentage').textContent = Math.round(progressPercentage);
+                
+                // Update step indicators
+                document.querySelectorAll('.progress-step').forEach((step, index) => {
+                    step.classList.remove('active');
+                    if (index + 1 < stepNumber) {
+                        step.classList.add('completed');
+                    } else if (index + 1 === stepNumber) {
+                        step.classList.add('active');
+                    }
+                });
             }
-        }
+            
+            // Navigation buttons
+            document.getElementById('nextToStep2').addEventListener('click', function() {
+                goToStep(2);
+            });
+            
+            document.getElementById('backToStep4').addEventListener('click', function() {
+                goToStep(4);
+            });
+            
+            // Initialize Signature Pad
+            const canvas = document.getElementById('signaturePad');
+            if (canvas) {
+                const signaturePad = new SignaturePad(canvas);
+                
+                // Clear signature
+                document.getElementById('clearSignature').addEventListener('click', function() {
+                    signaturePad.clear();
+                    document.getElementById('signature').value = '';
+                });
+                
+                // Save signature on end
+                canvas.addEventListener('mouseup', function() {
+                    if (!signaturePad.isEmpty()) {
+                        document.getElementById('signature').value = signaturePad.toDataURL();
+                    }
+                });
+                
+                canvas.addEventListener('touchend', function() {
+                    if (!signaturePad.isEmpty()) {
+                        document.getElementById('signature').value = signaturePad.toDataURL();
+                    }
+                });
+            }
+            
+            // Form submission
+            document.getElementById('ivrForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Create FormData
+                const formData = new FormData(this);
+                
+                // Send to server
+                fetch('/api/submit-ivr', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Form submitted successfully!');
+                        // Optionally redirect or reset form
+                    } else {
+                        alert('Error submitting form: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                });
+            });
+            
+            // Fetch manufacturers for dropdown (example)
+            fetch('/api/manufacturers')
+                .then(response => response.json())
+                .then(data => {
+                    const select = document.getElementById('manufacturer');
+                    data.forEach(manufacturer => {
+                        const option = document.createElement('option');
+                        option.value = manufacturer.manufacturerId;
+                        option.textContent = manufacturer.name;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error loading manufacturers:', error));
+                
+            // Fetch sales reps for dropdown (example)
+            fetch('/api/users?role=REP')
+                .then(response => response.json())
+                .then(data => {
+                    const select = document.getElementById('sales_rep');
+                    data.forEach(rep => {
+                        const option = document.createElement('option');
+                        option.value = rep.userId;
+                        option.textContent = rep.name;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error loading sales reps:', error));
+        });
     </script>
+</body>
+</html>
